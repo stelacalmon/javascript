@@ -87,6 +87,12 @@ switch (valor) {
 }
 ```
 
+### Laços de repetiçoes 
+```Javascript
+   for (let i = 1; i < 10; i++) {
+      // o código é repetido enquanto a condição for verdadeira
+} 
+```
 
 
 
