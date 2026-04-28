@@ -99,8 +99,8 @@ while (condição) {
 
 do {
    //o código é executado uma vez independente da condição, depois 
-  //o código é repetido enquanto a condição for verdadeira
-} white (condição)
+   //o código é repetido enquanto a condição for verdadeira
+} while (condição)
 
 
 ```
