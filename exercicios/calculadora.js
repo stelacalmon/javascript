@@ -1,5 +1,5 @@
 /**
- *  Calculadpra JS - Exemplo de uso de funções
+ *  Calculadora JS - Exemplo de uso de funções
  * @author Stela Calmon
  */
 
@@ -36,6 +36,9 @@ function raizQuadrada(num1) {
     return Math.sqrt(num1)
 }
 
+function porcentagem (num1, num2) {
+    return (num1 * num2) / 100
+}
 
 
 //==============================================================================================================================================================================
@@ -54,35 +57,40 @@ function iniciarCalculadora() {
                     num1 = Number(prompt("Digite o primeiro número: "))
                     num2 = Number(prompt("Digite o segundo número: "))
                     resultado = somar(num1, num2)
-                    console.log(`Resultado: ${resultado}`)
+                    
                     break
                     case 2:
                         num1 = Number(prompt("Digite o primeiro número: "))
                         num2 = Number(prompt("Digite o segundo número: "))
                         resultado = subtrair(num1, num2)
-                        console.log(`Resultado: ${resultado}`)
+                        
                     break
                     case 3:
                         num1 = Number(prompt("Digite o primeiro número: "))
                         num2 = Number(prompt("Digite o segundo número: "))
                         resultado = multiplicar(num1, num2)
-                        console.log(`Resultado: ${resultado}`)
+                        
                     break
                     case 4:
-                        num1 = Number(prompt("Digite o primeiro: "))
+                        num1 = Number(prompt("Digite o primeiro número: "))
                         num2 = Number(prompt("Digite o segundo número: "))
                         resultado = dividir(num1, num2)
-                        console.log(`Resultado: ${resultado}`)
+                
                     break
                     case 5:
                         num1 = Number(prompt("Digite o valor número: "))
-                        raizQuadrada = (num1)
+                        resultado = raizQuadrada(num1)
                     break
+                    case 6: 
+                        num1 = Number(prompt("Digite o primeiro número: "))
+                        num2 = Number(prompt("Digite o segundo número: "))
+                        resultado = porcentagem(num1, num2)
+                        break
                     default:
-                        console.log("Opção inválida")
+                        console.log("Opção inválida".bgRed)
                         prompt("Pressione [Enter] para continuar")
                         continue //continua dentro do switch case
-                     break
+                     
 
         }
 
@@ -96,11 +104,12 @@ function iniciarCalculadora() {
 //Função menu
 function mostrarMenu(){
     console.clear()
-    console.log("===Calculadora JS ===")
+    console.log("    Calculadora JS    ".bgBlue)
     console.log("1. Somar")
     console.log("2. Subtrair")
     console.log("3. Multiplicar")
     console.log("5. Raiz quadrada")
+    console.log("6. Porcentagem")
     console.log("0. Sair")
 }
 //Executar a função principal 
