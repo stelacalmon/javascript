@@ -1,0 +1,499 @@
+/**
+ * Sistema para gestão de academia 
+ * Estudo de array como estrutura de dados
+ * @author Stela Calmon
+ * @version 1.0
+ */
+
+const prompt = require('prompt-sync')()
+const colors = require('colors')
+
+let nome, idade, peso, altura, vip
+let matricula = 1
+let opcaoMenu, opcaoConsulta, opcaoRelatorio, busca
+let alunos = []
+
+function mainAcademia() {
+    do {
+        console.clear()
+        console.log(" _____           _           _           __ _____")
+        console.log("|  _  |___ ___ _| |___ _____|_|___    __|  |   __|")
+        console.log("|     |  _| .'| . | -_|     | | .'|  |  |  |__   |")
+        console.log("|__|__|___|__,|___|___|_|_|_|_|__,|  |_____|_____|")
+        console.log("")
+        console.log('1'.blue + '. Cadastrar aluno')
+        console.log('2'.blue + '. Consultar alunos')
+        console.log('3'.blue + '. Alterar aluno')
+        console.log('4'.blue + '. Excluir aluno')
+        console.log('5'.blue + '. Ficha do aluno')
+        console.log('6'.blue + '. Relatórios')
+        console.log('0'.blue + '. Sair')
+        console.log("")
+
+        opcaoMenu = Number(prompt("Escolha: ".blue))
+
+        switch (opcaoMenu) {
+            case 1:
+                cadastrarAlunos()
+                break
+            case 2:
+                consultarAlunos()
+                break
+            case 3:
+                editarAluno()
+                break
+            case 4:
+                excluirAluno()
+                break
+            case 5:
+                gerarFichaAluno()
+                break
+            case 6:
+                gerarRelatorios()
+                break
+            case 0:
+                console.log("Encerrando o sistema.")
+                break
+            default:
+                console.log("Opção inválida! ".red)
+                prompt("[ENTER]".green)
+                break;
+        }
+    } while (opcaoMenu !== 0)
+}
+
+function cadastrarAlunos() {
+    console.clear()
+    console.log("                                             ".underline)
+    console.log("                                             ".bgBlack)
+    console.log("              CADRASTRO DE ALUNO             ".bgBlack)
+    console.log("                                             ".bgBlack)
+
+    console.log("")
+    nome = prompt("Nome:".bgBlack)
+    idade = Number(prompt("Idade:".bgBlack))
+    peso = Number(prompt("Peso:".bgBlack))
+    altura = Number(prompt("Altura:".bgBlack))
+    vip = prompt("Aluno vip? (s/n):".bgBlack)
+    if (vip === "s") {
+        vip = true
+    } else {
+        vip = false
+    }
+
+    alunos.push([
+        matricula,
+        nome,
+        idade,
+        peso,
+        altura,
+        vip
+
+    ])
+
+    matricula++
+
+    console.log("")
+    console.log("Aluno cadrastrado com sucesso!".bgGreen)
+    prompt("[ENTER]".green)
+}
+
+function consultarAlunos() {
+    do {
+        console.clear()
+        console.log("                                             ".bgBlack)
+        console.log("              CONSULTA DE ALUNOS             ".bgBlack)
+        console.log("                                             ".bgBlack)
+        console.log()
+
+        console.log('1'.blue + '. Buscar aluno')
+        console.log('2'.blue + '. Listar alunos')
+        console.log('0'.blue + '. Voltar')
+
+        opcaoConsulta = Number(prompt("Escolha: ".green))
+
+        switch (opcaoConsulta) {
+            case 1:
+                buscarAluno()
+                break;
+            case 2:
+                listarAluno()
+                break
+            case 0:
+                break
+            default:
+                console.log("")
+                console.log("Opção inválida".red)
+                prompt("[ENTER]".green)
+        }
+    } while (opcaoConsulta !== 0)
+
+    function buscarAluno() {
+        console.clear()
+        console.log("                                             ".bgBlack)
+        console.log("             BUSCAR ALUNO                    ".bgBlack)
+        console.log("                                             ".bgBlack)
+
+        busca = prompt("Digite o nome do aluno: ").toLowerCase()
+
+        let encontrados = alunos.filter((a) => {
+            return a[1].toLowerCase().includes(busca)
+        })
+
+        if (encontrados.length === 0) {
+            console.log("")
+            console.log("Aluno não encontrado.".red)
+
+        } else {
+
+            let alunoEncontrado = encontrados
+                .map((a) => {
+                    return {
+                        matrícula: a[0],
+                        Nome: a[1],
+                        Idade: a[2],
+                        Peso: a[3],
+                        Altura: a[4],
+                        VIP: a[5]
+
+
+                    }
+
+                })
+            console.table(alunoEncontrado)
+
+        }
+
+        prompt("[ENTER]".green)
+    }
+
+    function listarAluno() {
+        console.clear()
+        console.log("                                             ".bgBlack)
+        console.log("             LISTA DE ALUNOS                 ".bgBlack)
+        console.log("                                             ".bgBlack)
+
+        if (alunos.length === 0) {
+            console.log("Nenhum aluno cadrastrado.".red)
+        } else {
+
+            let listarAlunos = alunosOrdenados
+                .map((a) => {
+                    return {
+                        matrícula: a[0],
+                        Nome: a[1],
+                        Idade: a[2],
+                        Peso: a[3],
+                        Altura: a[4],
+                        VIP: a[5]
+                    }
+                })
+            console.table(listarAlunos)
+        }
+
+        prompt("[ENTER]".green)
+    }
+}
+
+function editarAluno() {
+    console.clear()
+    console.log("=== ALTERAR ALUNO ===")
+    console.log("")
+    console.clear()
+    console.log("                                             ".bgBlack)
+    console.log("               ALTERAR ALUNO                 ".bgBlack)
+    console.log("                                             ".bgBlack)
+    console.log("")
+
+    let buscaMatricula = Number(prompt("Digite a matrícula do aluno: "))
+
+    let indice = alunos.findIndex((a) => {
+        return a[0] === buscaMatricula
+    })
+
+    console.log("")
+
+    if (indice === -1) {
+        console.log("Aluno não encontrado".red)
+
+    } else {
+        console.log("Dados atuais:")
+        console.log("")
+        console.log(`Nome: ${alunos[indice][1]}`)
+        console.log(`Idade: ${alunos[indice][2]}`)
+        console.log(`Peso: ${alunos[indice][3]}`)
+        console.log(`Altura: ${alunos[indice][4]}`)
+        console.log(`VIP: ${alunos[indice][5]}`)
+        console.log("")
+
+        let novoNome = prompt("Novo nome: ")
+        let novaIdade = Number(prompt("Nova idade: "))
+        let novoPeso = Number(prompt("Novo peso: "))
+        let novaAltura = Number(prompt("Nova altura: "))
+        let novoVip = prompt("Aluno VIP? (s/n): ")
+
+        if (novoVip === "s") {
+            novoVip = true
+
+        } else {
+            novoVip = false
+        }
+
+        alunos[indice][1] = novoNome
+        alunos[indice][2] = novaIdade
+        alunos[indice][3] = novoPeso
+        alunos[indice][4] = novaAltura
+        alunos[indice][5] = novoVip
+        console.log("")
+        console.log("Dados do aluno alterado com sucesso!".green)
+    }
+
+    console.log("")
+    prompt("[ENTER]".green)
+}
+
+function excluirAluno() {
+    console.clear()
+    console.log("                EXCLUIR ALUNO       ")
+    console.log("")
+    let buscaMatricula = Number(prompt("Digite a matrícula do aluno: "))
+
+    let indice = alunos.findIndex((a) => {
+        return a[0] === buscaMatricula
+    })
+
+    console.log("")
+    if (indice === -1) {
+        console.log("Aluno não encontrado".red)
+
+    } else {
+        console.log("Aluno encontrado:")
+        console.log("")
+        console.log(`Matrícula: ${alunos[indice][0]}`)
+        console.log(`Nome: ${alunos[indice][1]}`)
+        console.log(`Idade: ${alunos[indice][2]}`)
+        console.log(`Peso: ${alunos[indice][3]}`)
+        console.log(`Altura: ${alunos[indice][4]}`)
+        console.log(`VIP: ${alunos[indice][5]}`)
+        console.log("")
+
+        let confirmar = prompt("Confirmar exclusão? (s/n): ").toLowerCase()
+        if (confirmar === "s") {
+            alunos.splice(indice, 1)
+            console.log("")
+            console.log("Aluno excluído com sucesso!".green)
+        } else {
+            console.log("")
+            console.log("Exclusão cancelada".red)
+        }
+    }
+}
+
+console.log("")
+prompt("ENTER".green)
+
+function gerarFichaAluno() {
+    console.clear()
+    console.log("                                             ".bgBlack)
+    console.log("             FICHA DO ALUNO                  ".bgBlack)
+    console.log("                                             ".bgBlack)
+
+    let buscarMatricula = Number(prompt("Digite a matrícula do aluno: "))
+
+    let indice = alunos.findIndex((a) => {
+        return a[0] === buscarMatricula
+    })
+
+    if (indice === -1) {
+        console.log("Aluno não encontrado.".red)
+    } else {
+        nome = alunos[indice][1]
+        idade = alunos[indice][2]
+        peso = alunos[indice][3]
+        altura = alunos[indice][4]
+        vip = alunos[indice][5]
+        let statusVip
+        if (vip === true) {
+            statusVip = "Sim".green + "(Direito a personal trainer)"
+
+        } else {
+            statusVip
+        }
+
+        let fcm = (208 - (0.7 * idade)).toFixed(0)
+        let agua = (peso * 35) / 1000
+        let imc = (peso / (altura * altura))
+        let pesoIdealMin = (18.5 * (altura / altura)).toFixed(1)
+        let pesoIdealMax = (24.9 * (altura * altura)).toFixed(1)
+        let statusImc
+        if (imc < 18.5) {
+            statusImc = "Abaixo do peso"
+        } else if (imc < 25) {
+            statusImc = "Peso normal"
+        } else if (imc < 30) {
+            statusImc = "Sobrepeso"
+        } else if (imc < 35) {
+            statusImc = "Obesidade de grau I"
+        } else if (imc < 40) {
+            statusImc = "Obesidade de grau II"
+        } else {
+            statusImc = "Obesidade de grau III"
+        }
+
+        console.log("                                             ".underline)
+        console.log("                                             ")
+        console.log("             FICHA DO ALUNO                  ")
+        console.log("                                             ".underline)
+        console.log(`Matrícula: ${buscarMatricula}`)
+        console.log(`Nome: ${nome}`)
+        console.log(`Idade: ${idade}`)
+        console.log(`Peso: ${peso}`)
+        console.log(`Altura: ${altura}`)
+        console.log(`VIP: ${statusVip}`)
+        console.log("")
+        console.log(`FCM: ${fcm} bpm`)
+        console.log(`Água recomendada: ${agua.toFixed(1)} litros/dia`)
+        console.log(`IMC: ${imc.toFixed(2)} ${StatusImc}`)
+        console.log(`Faixa de peso ideal: ${pesoIdealMin} kg até ${pesoIdealMax} kg`)
+        console.log("                                             ".underline)
+
+    }
+
+    prompt("[ENTER]".green)
+}
+
+function gerarRelatorios() {
+    do {
+        console.clear()
+        console.log("                                             ".underline)
+        console.log("                   Relatórios                ")
+        console.log("                                             ".underline)
+        console.log("")
+        console.log("1. alunos VIP")
+        console.log("2. Média de idade")
+        console.log("3. % IMC dos alunos")
+        console.log("0. Voltar")
+
+        opcaoRelatorio = Number(prompt("Escolha: "))
+
+        switch (opcaoRelatorio) {
+            case 1:
+                gerarRelatorioVip()
+                break;
+            case 2:
+                gerarRelatorioMediaIdade()
+                break;
+            case 3:
+                gerarRelatorioImc()
+                break;
+            case 0:
+                break;
+            default:
+                console.log("")
+                console.log("Opção inválida".red)
+                prompt("[ENTER]".green)
+        }
+    } while (opcaoRelatorio !== 0)
+
+    function gerarRelatorioVip() {
+        console.clear()
+        console.log('                ALUNO' + 'VIP'.green)
+        console.log("")
+
+        let alunosVip = alunos.filter((a) => {
+            return a[5] === true
+        })
+
+        if (alunosVip.length === 0) {
+            console.log("Nenhum aluno VIP cadastrado".red)
+
+        } else {
+            let listaVip = alunosVip.map((a) => {
+                return {
+                    matrícula: a[0],
+                    Nome: a[1]
+                }
+            })
+            console.table(listaVip)
+        }
+        prompt("[ENTER]".green)
+    }
+
+    function gerarRelatorioMediaIdade() {
+        console.clear()
+        console.log("                                             ".bgBlack)
+        console.log("                MÉDIA DE IDADE               ".bgBlack)
+        console.log("                                             ".bgBlack)
+
+        if (alunos.length === 0) {
+            console.log("Nenhum aluno cadrastrado".red)
+
+        } else {
+            let somaIdades = 0
+            alunos.forEach((a) => {
+                somaIdades += a[2]
+            })
+            let media = somaIdades / alunos.length
+            console.log(`Média de idade: ${media.toFixed(0)} anos`)
+
+        }
+
+        console.log("")
+        prompt("[ENTER]".green)
+    }
+
+    function gerarRelatorioImc() {
+        console.clear()
+        console.log("                                             ".bgBlack)
+        console.log("          % IMC DOS ALUNOS                   ".bgBlack)
+        console.log("                                             ".bgBlack)
+        console.log("")
+
+        if (alunos.length === 0) {
+            console.log("Nenhum aluno cadrastrado".red)
+        } else {
+            let abaixoPeso = 0
+            let pesoNormal = 0
+            let acimaPeso = 0
+
+            alunos.map((a) => {
+                let peso = a[3]
+                let altura = a[4]
+                let imc = peso / (altura * altura)
+                if (imc < 18.5) {
+                    abaixoPeso++
+
+                } else if (imc < 25) {
+                    pesoNormal++
+                } else {
+                    acimaPeso++
+                }
+            })
+
+            let total = alunos.length
+            let percAbaixo = ((abaixoPeso / total) * 100)
+            let percNormal = ((pesoNormal / total) * 100)
+            let percAcima = ((acimaPeso / total) * 100)
+
+            let graficoAbaixo = "■".repeat(Math.round(percAbaixo / 2))
+            let graficoNormal = "■".repeat(Math.round(percNormal / 2))
+            let graficoAcima = "■".repeat(Math.round(percAcima / 2))
+
+            console.log(`Abaixo do peso: ${percAbaixo.toFixed(1)}%`)
+            console.log(graficoAbaixo)
+            console.log("")
+
+            console.log(`Peso normal: ${percNormal.toFixed(1)}%`)
+            console.log(graficoNormal)
+            console.log("")
+
+            console.log(`Acima do peso: ${percAcima.toFixed(1)}%`)
+            console.log(graficoAcima)
+            console.log("")
+        }
+
+        prompt('[' + 'ENTER'.green + ']')
+    }
+}
+
+mainAcademia()
